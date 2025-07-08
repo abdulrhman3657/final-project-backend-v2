@@ -61,7 +61,16 @@ export const postVoteService = async (
     };
   }
 
-  const updatedIdea = await getIdeaByIdService(ideaId);
+  let updatedIdea = await getIdeaByIdService(ideaId);
+
+  if (
+    updatedIdea.totalUpvotes + updatedIdea.totalDownvotes > 5 &&
+    !updatedIdea.isOnVentureBoard
+  ) {
+    await makeVentureBoardService(ideaId);
+    updatedIdea = await getIdeaByIdService(ideaId);
+  }
+
   return {
     message: "vote updated",
     totalVotes: {
