@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, CookieOptions } from "express";
 import * as AuthService from "../services/auth.service";
 import { AppError } from "../utils/error";
 import { AuthRequest } from "../middleware/auth.middleware";
@@ -6,10 +6,10 @@ import { CREATED, OK } from "../utils/http-status";
 import { dev } from "../utils/helpers";
 
 // Define consistent cookie options for tokens
-const baseCookieOpts = {
+const baseCookieOpts: CookieOptions = {
   httpOnly: true,
   secure: !dev,
-  sameSite: (dev ? "lax" : "none") as const,
+  sameSite: dev ? "lax" : "none",
   path: "/",
 };
 
